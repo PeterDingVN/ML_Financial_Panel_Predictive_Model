@@ -13,5 +13,5 @@ __all__ = [
     'eda_describe', 'select_data', 'impute', 'final_data', #util.dta_prep
     'panelsplit', # utils.libs (outside package)
     'InputData', # utils.dta_split -> this is a class
-    'input_test_split' # utils.dta_split
+    'input_test_split', 'train_val_split' # utils.dta_split
 ]
