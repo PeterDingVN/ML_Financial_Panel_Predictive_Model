@@ -38,7 +38,7 @@ class InputData:
         X = df_copy.drop([self.target], axis=1)
         y = df_copy[self.target]
         periods = df_copy.index.get_level_values(level=1)
-        cv_strat = PanelSplit(periods = periods, test_size=test_size, n_splits=n_splits)
+        cv_strat = PanelSplit(periods = periods, test_size=test_size, n_splits=n_splits, gap=1)
 
         result_fin = []
 
