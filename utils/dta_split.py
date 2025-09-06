@@ -22,7 +22,7 @@ class InputData:
         self.target = target
         self.reg = reg
 
-    def optimal_param(self, n_splits: int, test_size: int) -> pd.DataFrame:
+    def optimal_param(self, n_splits: int, test_size: int, gap=1) -> pd.DataFrame:
         '''
 
         :param n_splits: number of folds to loop through
@@ -38,7 +38,7 @@ class InputData:
         X = df_copy.drop([self.target], axis=1)
         y = df_copy[self.target]
         periods = df_copy.index.get_level_values(level=1)
-        cv_strat = PanelSplit(periods = periods, test_size=test_size, n_splits=n_splits, gap=1)
+        cv_strat = PanelSplit(periods = periods, test_size=test_size, n_splits=n_splits, gap=gap)
 
         result_fin = []
 
