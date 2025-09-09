@@ -110,28 +110,25 @@ def input_test_split(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
     return df_input, df_test
 
 def train_val_split(df: pd.DataFrame, target: str, train_size=0.9) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+  
     '''
     :param: the full input dataframe
     :returns: train and validation set
     '''
-    df2 = df.copy()
-    df2 = df2.sort_values(by=['company', 'year'])
 
-    all_idx = df2['year'].unique().tolist()
-    all_idx.sort()
-    tr_idx = all_idx[:int(len(all_idx) * train_size)]
-    val_idx = all_idx[int(len(all_idx) * train_size):]
+    df2 = df.sort_values(by=['company', 'year'])
 
-    X = df2.drop(columns=['company', target])
-    y = df2[[target, 'year']]
+    years = sorted(df2['year'].unique())
+    split = int(len(years) * train_size)
+    tr_year, val_year = years[:split], years[split:] 
 
+    X = df2.drop(columns=[target]).set_index(['company', 'year'])
+    y = df2[['company', 'year', target]].set_index(['company', 'year'])
 
-    X_tr, y_tr = X[X['year'].isin(tr_idx)], y[y['year'].isin(tr_idx)]
-    X_tr = X_tr.drop(columns=['year'])
-    y_tr = y_tr.drop(columns=['year'])
+    X_tr = X[X.index.get_level_values('year').isin(tr_year)]
+    X_val = X[X.index.get_level_values('year').isin(val_year)]
+    y_tr = y[y.index.get_level_values('year').isin(tr_year)]
+    y_val = y[y.index.get_level_values('year').isin(val_year)]
 
-    X_val, y_val = X[X['year'].isin(val_idx)], y[y['year'].isin(val_idx)]
-    X_val = X_val.drop(columns=['year'])
-    y_val = y_val.drop(columns=['year'])
 
     return X_tr, y_tr, X_val, y_val
