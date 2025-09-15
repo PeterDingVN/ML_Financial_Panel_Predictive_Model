@@ -1,5 +1,5 @@
-from .libs import *
-from .ml_hyperpars import *
+from .default_libs import *
+from .hyperparams_ML import *
 from panelsplit.cross_validation import PanelSplit
 from sklearn.model_selection import GridSearchCV
 from typing import Tuple
@@ -27,6 +27,7 @@ class InputData:
 
         :param n_splits: number of folds to loop through
         :param test_size: limit test set size, max number == n_samples // (n_splits + 1)
+        :param gap: number of interval periods between train and val set
         :return: a table summarizing the score of all hyper-parameters from best -> worst
 
         '''
