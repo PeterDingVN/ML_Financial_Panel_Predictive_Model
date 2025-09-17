@@ -1,0 +1,6 @@
+# Ignore IDE project settings
+.idea/
+
+# Ignore Python cache folders
+utils_dta_processing/__pycache__/
+utils_ml_train/__pycache__/
