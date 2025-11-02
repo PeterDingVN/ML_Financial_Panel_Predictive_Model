@@ -1,7 +1,10 @@
 from utils.utils_dta_processing import *
 from utils.utils_dl_train import *
 
-
+# DataPreprocess will:
+# split input into train and val set
+# apply tensor on data with shape (rows, timestep, features) to fit with LSTM
+# scale data to better LSTM perf
 class DataPreprocess:
     def __init__(self,
                  df_input: pd.DataFrame,

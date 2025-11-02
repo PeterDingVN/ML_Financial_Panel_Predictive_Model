@@ -2,7 +2,9 @@ from utils.utils_dl_train import *
 from utils.utils_dta_processing import *
 from .dl_data_preprocess import DataPreprocess
 
-
+# LSTM will:
+# Run LSTM model on data from DataPreprocess
+# Summerize result of train, val, test set
 class LSTM(DataPreprocess):
     def __init__(self,
                  df_input: pd.DataFrame,

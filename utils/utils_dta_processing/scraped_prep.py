@@ -5,6 +5,9 @@ from . import *
 # Note that: 'STT', 'Mã', 'Tên công ty', 'Sàn' is default columns of FiinProX raw dataset
 ### -----------------------------------
 
+
+# prep_scraped data is used to preprocess raw data downloaded from FiinPro
+# it helps reshape the data into proper structure (panel) instead of doing advanced cleaning
 def prep_scraped_data(path,
               sheet_name: str ='Sheet1',
               time_invariant: list = None):
@@ -20,6 +23,7 @@ def prep_scraped_data(path,
     :return: dataframe
 
     '''
+
     if time_invariant is None:
         id_col = ['Mã', 'Sàn']
     else:
@@ -43,18 +47,11 @@ def prep_scraped_data(path,
     )
     df_unpivot['year'] = pd.to_numeric(df_unpivot['year'], errors='coerce')
 
-
-
-    # clean variables column by adding 'vars_mini' column
+    # clean variable column by adding 'vars_mini' column
     df_unpivot['vars_mini'] = df_unpivot['variable'].apply(
-      lambda x: x.split('\n')[0]
+        lambda x: re.sub(r'\d+\.', '', x.split('\n')[0]).strip()
     )
-    df_unpivot['vars_mini'] = df_unpivot['vars_mini'].apply(
-      lambda x: re.sub(r'\d+\.', '', x)
-    )
-    df_unpivot['vars_mini'] = df_unpivot['vars_mini'].apply(
-      lambda x: x.strip()
-    )
+
     # drop 'variable' column
     df_unpivot.drop(columns='variable', inplace=True)
 

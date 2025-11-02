@@ -1,7 +1,7 @@
 from .default_libs import *
 from sklearn.impute import KNNImputer
 
-
+# eda_descrive helps summerize params of data
 def eda_describe(df: pd.DataFrame) -> pd.DataFrame:
   '''
   param df: input a dataframe df or df[[...]]
@@ -15,22 +15,24 @@ def eda_describe(df: pd.DataFrame) -> pd.DataFrame:
     col 2    25     ...
   '''
 
+  # Make "describe" table
   num_col1 = df.select_dtypes(include='number').columns
-
   df_describe = df[num_col1].describe().round(4)
 
+  # Add new cols named skew and kurtosis
   sk = stats.skew(df[num_col1], nan_policy='omit')
   k = stats.kurtosis(df[num_col1], nan_policy='omit')
-
   sk_k = pd.DataFrame([sk, k], columns = num_col1)
   sk_k = sk_k.apply(lambda x: round(x,4))
 
+  # Concat newly created cols into describe table
   result = pd.concat([df_describe, sk_k])
   result.rename(index = {0: 'skewness', 1: 'kurtosis'}, inplace = True)
+
   return result.T
 
 
-
+# select_data helps, from pre-set criteria, choose companies with enough data
 def select_data(df: pd.DataFrame) -> pd.DataFrame:
   '''
   param: dataframe -> df or df[[]]
@@ -55,12 +57,19 @@ def select_data(df: pd.DataFrame) -> pd.DataFrame:
 
   data = []
   try:
+
+    # Select rows with row NaN fewer or equal to 6
     df = df[df.isna().sum(axis=1) <= 6]
+
+    # Loop thru all companies (from the remaining data)
     for i, grp in df.groupby('company'):
       year = grp['year'].to_list()
       year.sort()
+
+      # Check for all companies left with more than 4 data rows (>= 4 consecutive years of data)
       if len(year) >= 4 and set(np.diff(year)) == {1}:
         data.append(grp)
+
     data_fin = pd.concat(data)
     return data_fin
 
@@ -68,7 +77,7 @@ def select_data(df: pd.DataFrame) -> pd.DataFrame:
     return e
 
 
-
+# impute uses KNNImpute to fill in NaN places
 def impute(df: pd.DataFrame) -> pd.DataFrame:
   '''
   param df: dataframe -> df or df[[]]
@@ -100,6 +109,7 @@ def impute(df: pd.DataFrame) -> pd.DataFrame:
   return df_filled
 
 
+# final_data helps feature engineer and lag the data
 def final_data(df: pd.DataFrame, y_col: str) -> pd.DataFrame:
   '''
 
