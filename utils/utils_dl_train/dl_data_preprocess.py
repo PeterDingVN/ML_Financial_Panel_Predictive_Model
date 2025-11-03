@@ -31,20 +31,23 @@ class DataPreprocess:
 
         # Class given params
         self.timestep = timestep
-        if isinstance(features, str):
-            self.features = [features]
-        else:
-            self.features = features
+        self.features = (features if isinstance(features, list) else [features])
         self.target = target
 
         # Created data
+        ## Specify columns
+        self.all_cols = ['company', 'year'] + self.features + [self.target]
+        df_input = df_input.reset_index()[self.all_cols]
+        df_test = df_test.reset_index()[self.all_cols]
+
+        ## Preprocess data
+        ### Define test data
+        df_test_fin = df_test.sort_values(['company', 'year']).set_index(['company', 'year'])
+        self.test = df_test_fin
+
+        ### Split input into train and val set
         self.train, self.val = self.train_validation_split(df_input)
-        if df_test.index.names != ['company', 'year']:
-            df_test = df_test.sort_values(['company', 'year'])
-            df_test_fin = df_test.reset_index(drop=True).set_index(['company', 'year'])
-            self.test = df_test_fin
-        else:
-            self.test = df_test
+
 
         ## Final scaled data
         all_data_scaled = self.scaler([self.train, self.val, self.test])
@@ -69,52 +72,16 @@ class DataPreprocess:
         val_df = df[df['year'].isin(val_idx)]
 
         ## Set index for final data
-        if train_df.index.names != ['company', 'year']:
-            train_df = train_df.sort_values(['company', 'year'])
-            train_df = train_df.reset_index(drop=True).set_index(['company', 'year'])
-
-        if val_df.index.names != ['company', 'year']:
-            val_df = val_df.sort_values(['company', 'year'])
-            val_df = val_df.reset_index(drop=True).set_index(['company', 'year'])
+        train_df = train_df.sort_values(['company', 'year']).set_index(['company', 'year'])
+        val_df = val_df.sort_values(['company', 'year']).set_index(['company', 'year'])
 
         return train_df, val_df
-
-    # Create tensor (obs, timestep, features)
-    def create_timestep(self, df_: pd.DataFrame):
-        df = df_.copy()
-
-        ## Ensure format of input data
-        if not isinstance(self.target, str):
-            raise ValueError("target must be a string")
-
-        if df.index.names != ['company', 'year']:
-            df = df.sort_values(['company', 'year'])
-            df.reset_index(drop=True).set_index(['company', 'year'], inplace=True)
-
-        ## Main function
-        X, y = [], []
-        for idx, grp in df.groupby('company'):
-
-            if self.timestep > len(grp):
-                warnings.warn(f"Some company with year data less than {self.timestep} will be dropped")
-                continue
-
-            for i in range(self.timestep, len(grp) + 1):
-                X_inp = grp.drop(columns=self.target).iloc[i - self.timestep:i]
-                y_inp = grp[self.target].iloc[i - 1]
-
-                X.append(X_inp.values)
-                y.append(y_inp)
-
-        return np.array(X), np.array(y).reshape(-1)
-
 
     # Scale data using PolyFeatures, OnehotEncode, StandardScaler
     def scaler(self, df_scaled: pd.DataFrame | list[pd.DataFrame]):
 
         ## Ensure format
-        if not isinstance(df_scaled, list):
-            df_scaled = [df_scaled]
+        df_scaled = (df_scaled if isinstance(df_scaled, list) else [df_scaled])
 
         ## Data to be fitted scaler on
         fit_data = self.train
@@ -154,6 +121,38 @@ class DataPreprocess:
             all_data.append(data_scaled)
 
         return all_data
+
+
+    # Create tensor (obs, timestep, features)
+    def create_timestep(self, df_: pd.DataFrame):
+        df = df_.copy()
+
+        ## Ensure format of input data
+        if not isinstance(self.target, str):
+            raise ValueError("target must be a string")
+
+        if df.index.names != ['company', 'year']:
+            df = df.sort_values(['company', 'year']).set_index(['company', 'year'])
+
+        ## Main function
+        X, y = [], []
+        for idx, grp in df.groupby('company'):
+
+            if self.timestep > len(grp):
+                warnings.warn(f"Some company with year data less than {self.timestep} will be dropped")
+                continue
+
+            for i in range(self.timestep, len(grp) + 1):
+                X_inp = grp.drop(columns=self.target).iloc[i - self.timestep:i]
+                y_inp = grp[self.target].iloc[i - 1]
+
+                X.append(X_inp.values)
+                y.append(y_inp)
+
+        return np.array(X), np.array(y).reshape(-1)
+
+
+
 
 
 
