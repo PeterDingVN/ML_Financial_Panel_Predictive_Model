@@ -103,3 +103,16 @@ Definitely, this model, trained on imbalanced panel data, could show unstable pe
 
 
 ## 💡 Recommendation and usage
+Due to imbalance in training data (not all 1500 companies have 10 years of data, and not all companies are included in both training and test set), 
+you should be careful when using the models for real-life application. 
+
+For list of companies available for trusted prediction, check out ```/doc/pred_list.txt```
+
+For download and usage please check out ```/doc/Usage_Instruction.md```.
+
+## ❗ Disclaimer
+This project does not mean investment suggestion by any means. For optimal real-life application, please consider this as a supporting tool only, aiding in your own analysis of stocks.
+
+This project is open for public use, including educational, commercial purposes and more. And you can either mention my repo or name as you wish (but this is not compulsory).
+
+
