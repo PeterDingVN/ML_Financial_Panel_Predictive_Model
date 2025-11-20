@@ -26,32 +26,11 @@ That said, organizational investors could still use this tool as an assistant, s
 project 
     ├── src/
     │   ├── utils/
-    │   │   ├── __init__.py
-    │   │   ├── default_libs.py
-    │   │   ├── preprocess_eda.py
-    │   │   └── scraped_prep.py
     │   ├── requirement.txt
     │   └── training/
     │       ├── deep_ml/
-    │       │   ├── __init__.py
-    │       │   └── dl_training_utils.py
     │       └── normal_ml/
-    │           ├── __init__.py
-    │           ├── hyperparams_ML.py
-    │           └── ml_training_utils.py
     ├── data/
-    │   ├── data_addon/
-    │   │   ├── roa_addon_data.csv
-    │   │   └── roe_add_data.csv
-    │   ├── data_for_modelling/
-    │   │   ├── df_value_ad.csv
-    │   │   ├── df_roa.csv
-    │   │   ├── df_roe.csv
-    │   │   ├── df_revenue.csv
-    │   │   └── df_ebitda.csv
-    │   ├── data_raw/
-    │   │   └── dataset.csv
-    │   └── var_definition.txt
     ├── doc/
     │   ├── CHANGELOG.md
     │   ├── CONTRIBUTION.md
@@ -59,13 +38,7 @@ project
     ├── model/
     ├── notebook/
     │   ├── eda/
-    │   │   └── data_preprocessing.ipynb
     │   └── training/
-    │       ├── ebitda_model.ipynb
-    │       ├── revenue_model.ipynb
-    │       ├── roa_model.ipynb
-    │       ├── roe_model.ipynb
-    │       └── value_add_model.ipynb
     ├── results/
     ├── .gitignore
     └── README.md
