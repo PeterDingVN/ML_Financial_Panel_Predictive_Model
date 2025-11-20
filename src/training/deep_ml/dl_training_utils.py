@@ -220,9 +220,8 @@ class LSTM(DataPreprocess):
             model = Sequential([
                 layers.Input(shape=self.X_train_scaled.shape[1:]),
                 layers.LSTM(16, return_sequences=True),
-                layers.LSTM(16,  return_sequences=True),
                 layers.LSTM(32, return_sequences=False),
-                layers.Dense(32),
+                layers.Dense(8),
                 layers.Dense(1)
             ])
 
