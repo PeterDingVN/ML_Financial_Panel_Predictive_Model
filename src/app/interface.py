@@ -39,3 +39,4 @@ if st.button("🔮 Predict"):
             f"**{selected_metric}** for **next year** is:\n\n"
             f"### 🟦 {prediction_value}"
         )
+
