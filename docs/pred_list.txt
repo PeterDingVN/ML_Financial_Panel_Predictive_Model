@@ -2,14 +2,17 @@ Below are the list of companies by metrics and year counts. Companies in differe
 categorized according to year count. Larger year count means more
 data for training, hence more reliable prediction.
 
-Note: Given the large amount of data, please use Ctrl + F or Command + F (in MacOS) to find your desired
-company.
+Note:
+-   Given the large amount of data, please use Ctrl + F or Command + F (in MacOS) to find your desired
+    company.
+-   It is recommended that users trust companies with year-count observations more than 7, pay
+    close attention to 4-6, but ignore those with less than 3 years of data.
 
 Table:
 Cateogry
-    + 1-3 poor
-    + 4-6 medium
-    + 7-9 rich
+    + 1-3 low accuracy
+    + 4-6 medium accuracy
+    + 7-9 high accuracy
 
 +-----+--------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------+
 |     | revenue                                                                                          | ebitda                                                                                                     | value-add                                                                                                 | roa                                                                             | roe                                                                                         |
