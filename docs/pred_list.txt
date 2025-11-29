@@ -5,8 +5,8 @@ data for training, hence more reliable prediction.
 Note:
 -   Given the large amount of data, please use Ctrl + F or Command + F (in MacOS) to find your desired
     company.
--   It is recommended that users trust companies with year-count observations more than 7, pay
-    close attention to 4-6, but ignore those with less than 3 years of data.
+-   It is recommended that users trust companies with year-count observations more than 7, be
+    careful with prediction from 4-6, but ignore those with less than 3 years of data.
 
 Table:
 Cateogry
