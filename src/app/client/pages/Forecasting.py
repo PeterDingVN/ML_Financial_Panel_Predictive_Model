@@ -54,23 +54,50 @@ predict_button = st.button("Predict", icon="📈")
 
 # Page logic
 status = st.empty()
-import time
 if predict_button:
     if uploaded_file is None:
         st.error("❌ No file uploaded. Please upload an Excel file.")
     else:
-        df = pd.read_excel(uploaded_file) # dung read_data doc file
-
         # Phase 1: data verification
         status.success("Checking data...")
         req_col = col_list(metric)
+        df = translation(pd.read_excel(uploaded_file))
 
+        ## Case when data input is cleaned
+        if all(col in df.columns for col in req_col):
+            # ensure correct col order
+            df = df[req_col]
 
-        # Phase 2: pred making using models
+        ## Case when users input original data scraped from FiinProX
+        else:
+            try:
+                df = col_trans(uploaded_file)
+                df = df[req_col]
 
-        # Phase 3: return result
+        ## Case other than those cases (irrelevant or wrong formatted data)
+            except Exception:
+                status.empty()
+                st.error(f"Please make sure your data start at A1, or else, not intervened since download from FiinProX"
+                         f"and check your data columns if they match required col: {req_col}. "
+                         f"For variable meaning checkout data/var_definition.txt")
+
+        ## check for null
+        if df.isna().sum().sum():
+            st.error("Input data contains missing values, please fill the data or drop the entire row")
 
         status.empty()
-        st.write("### 🔍 Result:")
-        # Insert logic of prediction here
-        st.write(f"Prediction completed: {metric}")
+
+
+
+        # # Phase 2: pred making using models
+        # status.success("Predicting...")
+        # ## Set index for company, year -> keep the id while only inputing features into model
+        # df = df.set_index(['company', 'year'])
+        #
+        #
+        # # Phase 3: return result
+        #
+        # status.empty()
+        # st.write("### 🔍 Result:")
+        # # Insert logic of prediction here
+        # st.write(f"Prediction completed: {metric}")

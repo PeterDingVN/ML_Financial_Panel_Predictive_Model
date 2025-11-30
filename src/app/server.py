@@ -25,18 +25,18 @@ def col_list(metric):
 
     elif metric == "ROA":
         col = ['in_stock_lag1', 'industry', 'other_fund_lag1','for_own_lag1','roa_lag1','loss',
-        'liq','oea','gov_own_lag1', 'equity', 'd/e']
+        'liq','oea','gov_own_lag1', 'equity', 'd/e', 'company', 'year']
         return col
 
     elif metric == "ROE":
         col = ['long_receive_lag1', 'other_fund_lag1', 'roe_lag1',
         'long_invest_lag1', 'in_stock_lag1',
         'asset/equity', 'cash&equi_to_asset', 'a/w',
-        'size', 'asset/lia', 'industry']
+        'size', 'asset/lia', 'industry','company', 'year']
         return col
 
 
-def read_data(path):
+def col_trans(path):
     df = pd.read_excel(path)
 
     if all("Unnamed" in col for col in df.columns) or any(re.search(r'Năm:\s*\d{4}', col) for col in df.columns):
@@ -45,8 +45,6 @@ def read_data(path):
     df = translation(df)
     return df
 
-
-# Preprocess + pred voi pkl va keras
 
 
 
