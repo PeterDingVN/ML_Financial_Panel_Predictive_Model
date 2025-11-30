@@ -50,9 +50,11 @@ class DataPreprocess:
         self.train, self.val = self.train_validation_split(df_input, self.val_size)
 
 
-        ## Final scaled data
+        ## Scaled + create timestep
+        ### scale
         all_data_scaled = self.scaler([self.train, self.val, self.test])
 
+        ### create timestep
         self.X_train_scaled, self.y_train = self.create_timestep(all_data_scaled[0])
         self.X_val_scaled, self.y_val = self.create_timestep(all_data_scaled[1])
         self.X_test_scaled, self.y_test = self.create_timestep(all_data_scaled[2])
