@@ -5,7 +5,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Build the path to client.py inside src/app/
-APP_PATH = os.path.join(BASE_DIR, "src", "app", "client.py")
+APP_PATH = os.path.join(BASE_DIR, "src", "app", "client", "Homepage.py")
 
 # Launch Streamlit
 subprocess.run(["streamlit", "run", APP_PATH])

@@ -6,7 +6,7 @@ __all__ = [
     'lrg', 'knn', 'xgb_class', 'xgb_reg',  # all Ml algorithm used
     'r2', 'rmse', 'mape', #  hyperparams ML -> regression eval metrics
     'roc_auc', 'recall', 'precision', 'accuracy', #  hyperparams ML -> classification eval metrics
-
+    'Pipeline', #used for model creation
     'MinMaxScaler',  # scaler used
 
     'panelsplit', # data split by time-company

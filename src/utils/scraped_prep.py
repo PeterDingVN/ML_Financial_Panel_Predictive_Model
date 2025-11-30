@@ -84,32 +84,32 @@ def translation(df: pd.DataFrame):
     df = df.rename(columns={
         "Mã": "company",
         "Sàn": "platform",
-        "EBITDA": "ebitda",
-        "Doanh thu thuần": "revenue",
+        "EBITDA": "ebitda_lag1",
+        "Doanh thu thuần": "revenue_lag1",
         "Lợi nhuận thuần từ hoạt động kinh doanh": "net_op_profit",
-        "ROA %": "roa",
-        "ROE %": "roe",
+        "ROA %": "roa_lag1",
+        "ROE %": "roe_lag1",
         "ROIC %": "roic",
         "ROCE %": "roce",
         "Giá vốn hàng bán": "cogs",
         "Chi phí bán hàng": "sales_cost",
         "Chi phí quản lý doanh nghiệp": "admin_cost",
-        "Các khoản phải thu ngắn hạn": "short_receive",
+        "Các khoản phải thu ngắn hạn": "short_receive_lag1",
         "Tiền và tương đương tiền": "cash",
-        "Tài sản ngắn hạn khác": "other_short_asset",
-        "Hàng tồn kho ròng": "in_stock",
-        "Phải thu dài hạn": "long_receive",
-        "Tài sản dài hạn khác": "other_long_asset",
-        "Đầu tư dài hạn": "long_invest",
-        "Tài sản dở dang dài hạn": "cwip",
+        "Tài sản ngắn hạn khác": "other_short_asset_lag1",
+        "Hàng tồn kho ròng": "in_stock_lag1",
+        "Phải thu dài hạn": "long_receive_lag1",
+        "Tài sản dài hạn khác": "other_long_asset_lag1",
+        "Đầu tư dài hạn": "long_invest_lag1",
+        "Tài sản dở dang dài hạn": "cwip_lag1",
         "Tài sản cố định": "fixed_asset",
-        "Giá trị ròng tài sản đầu tư": "invest_nav",
-        "Nợ dài hạn": "long_liability",
-        "Nợ ngắn hạn": "short_liability",
+        "Giá trị ròng tài sản đầu tư": "invest_nav_lag1",
+        "Nợ dài hạn": "long_liability_lag1",
+        "Nợ ngắn hạn": "short_liability_lag1",
         "Vốn và các quỹ": "equity_fund",
-        "Nguồn kinh phí và quỹ khác": "other_fund",
-        "Tỷ lệ sở hữu nhà nước": "gov_own",
-        "Tỷ lệ sở hữu nước ngoài": "for_own",
+        "Nguồn kinh phí và quỹ khác": "other_fund_lag1",
+        "Tỷ lệ sở hữu nhà nước": "gov_own_lag1",
+        "Tỷ lệ sở hữu nước ngoài": "for_own_lag1",
         "Phân ngành - ICB L1": "industry",
         "II. VỐN CHỦ SỞ HỮU": "equity",
         "A. TỔNG CỘNG TÀI SẢN": "tot_asset",
@@ -122,7 +122,9 @@ def translation(df: pd.DataFrame):
     # Extended translation in the existence of prticular col combos
     all_cols = df.columns.tolist()
     if all(col in all_cols for col in ['cogs', 'sales_cost', 'admin_cost']):
-        df['expense'] = df['cogs'] + df['sales_cost'] + df['admin_cost']
+        df['expense_lag1'] = df['cogs'] + df['sales_cost'] + df['admin_cost']
+    elif all(col in all_cols for col in ['revenue_lag1', 'cogs', 'sales_cost', 'admin_cost']):
+        df['value_add_lag1'] = df['revenue_lag1'] - (df['cogs'] + df['sales_cost'] + df['admin_cost'])
     elif "net_op_profit" in all_cols:
         df['loss'] = df['net_op_profit'].apply(lambda x: 0 if x <=0 else 1)
     elif all(col in all_cols for col in ['cash', 'tot_asset']):
