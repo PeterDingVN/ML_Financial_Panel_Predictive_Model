@@ -1,13 +1,14 @@
 import streamlit as st
+from src.app.server import *
 
 # Page config
 st.title("Forecasting")
 
 st.sidebar.title("Metrics")
-st.sidebar.radio(
-    "Choose one metric you want to forecast",
-    ('ROA', 'ROE', 'Value_add', 'Revenue', 'EBITDA')
-)
+metric = st.sidebar.radio(
+        "Choose one metric you want to forecast",
+        ('ROA', 'ROE', 'Value_add', 'Revenue', 'EBITDA')
+        )
 st.sidebar.markdown(
     """
     <div style="height:50vh;"></div>
@@ -52,13 +53,24 @@ uploaded_file = st.file_uploader(
 predict_button = st.button("Predict", icon="📈")
 
 # Page logic
+status = st.empty()
+import time
 if predict_button:
     if uploaded_file is None:
         st.error("❌ No file uploaded. Please upload an Excel file.")
     else:
-        df = pd.read_excel(uploaded_file)
-        st.success("Predicting...")
+        df = pd.read_excel(uploaded_file) # dung read_data doc file
 
+        # Phase 1: data verification
+        status.success("Checking data...")
+        req_col = col_list(metric)
+
+
+        # Phase 2: pred making using models
+
+        # Phase 3: return result
+
+        status.empty()
         st.write("### 🔍 Result:")
         # Insert logic of prediction here
-        st.write("Prediction completed. ")
+        st.write(f"Prediction completed: {metric}")
