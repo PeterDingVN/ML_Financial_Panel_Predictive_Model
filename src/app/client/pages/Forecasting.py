@@ -38,6 +38,11 @@ st.markdown(
     .css-1cpxqw2, .css-1d391kg {
         color: white !important;
     }
+    
+    div.stAlert p {
+        color: #ffffff !important;
+        font-weight: 200;
+    }
     </style>
 """,
     unsafe_allow_html=True
@@ -86,6 +91,7 @@ if predict_button:
             st.error("Input data contains missing values, please fill the data or drop the entire row")
 
         status.empty()
+        st.success(f"{df.columns}, {df.head()}")
 
 
 
