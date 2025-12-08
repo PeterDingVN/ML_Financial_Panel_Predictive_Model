@@ -21,3 +21,6 @@ import statsmodels
 
 # PanelSplit by 4Freye (outside package)
 import panelsplit
+
+# Tensorflow
+import tensorflow as tf

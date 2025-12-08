@@ -1,5 +1,6 @@
 import streamlit as st
 from src.app.server import *
+import pickle as pk
 
 # Page config
 st.title("Forecasting")
@@ -103,17 +104,32 @@ if predict_button:
             st.stop()
 
         st2.empty()
-        st.success(f'{df.columns}')
 
 
-        # # Phase 2: pred making using models
-        # status.success("Predicting...")
-        # ## Set index for company, year -> keep the id while only inputing features into model
-        # df = df.set_index(['company', 'year'])
-        #
-        #
-        # # Phase 3: return result
-        #
+        # Phase 2: pred making using models
+        st2.success("Predicting...")
+        ## Set index for company, year -> keep the id while only inputing features into model
+        df = df.set_index(['company', 'year'])
+
+        ## Predict revenue, ebitda, value_add
+        if metric in ['EBITDA', 'Value_add', 'Revenue']:
+            with open(f'src\\app\\model\\{metric.lower()}.pkl', 'rb') as f:
+                model = pk.load(f)
+            output = model.predict(df)
+        else:
+            with open(f'src\\app\\model\\{metric.lower()}\\{metric.lower()}_prepro.pkl', 'rb') as f:
+                prepro = pk.load(f)
+            df = prepro.transform(df)
+            model = tf.keras.models.load_model(f'src\\app\\model\\{metric.lower()}\\{metric.lower()}_model.keras')
+            output = model.predict(df)
+
+        st2.empty()
+        st.success(f'Result is {output}')
+
+
+
+        # Phase 3: return result
+
         # status.empty()
         # st.write("### 🔍 Result:")
         # # Insert logic of prediction here
