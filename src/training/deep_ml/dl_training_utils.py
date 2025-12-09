@@ -107,7 +107,7 @@ class DataPreprocess:
                 ("num", num_pipe, num_col),
                 ("cat", cat_pipe, cat_col)
             ],
-            remainder="passthrough",
+            remainder="drop",
             sparse_threshold=0
         )
 
@@ -115,12 +115,16 @@ class DataPreprocess:
         col_trans.fit(fit_data)
         all_data = []
         for data in df_scaled:
+            # Transform everything except target var
+            data_ori = data.copy()
+            data_scaled = col_trans.transform(data.drop(columns=self.target))
 
-            data_scaled = col_trans.transform(data)
+            # Append full data
             cols = col_trans.get_feature_names_out()
             data_scaled = pd.DataFrame(data_scaled, columns=cols, index=data.index)
-            if self.target not in data_scaled.columns:
-                data_scaled = data_scaled.rename(columns={f'remainder__{self.target}': self.target})
+            data_scaled = data_scaled.join(data_ori[f'{self.target}'])
+
+            # return all data
             all_data.append(data_scaled)
 
         return all_data

@@ -115,22 +115,24 @@ if predict_button:
         if metric in ['EBITDA', 'Value_add', 'Revenue']:
             with open(f'src\\app\\model\\{metric.lower()}.pkl', 'rb') as f:
                 model = pk.load(f)
+            ### Main
             output = model.predict(df)
         else:
             with open(f'src\\app\\model\\{metric.lower()}\\{metric.lower()}_prepro.pkl', 'rb') as f:
                 prepro = pk.load(f)
+            ### Preprocess input data
             df = prepro.transform(df)
+            df = df.reshape(1, df.shape[0], df.shape[1])
+            ### Main
             model = tf.keras.models.load_model(f'src\\app\\model\\{metric.lower()}\\{metric.lower()}_model.keras')
             output = model.predict(df)
 
         st2.empty()
-        st.success(f'Result is {output}')
 
 
 
         # Phase 3: return result
 
-        # status.empty()
         # st.write("### 🔍 Result:")
         # # Insert logic of prediction here
         # st.write(f"Prediction completed: {metric}")
