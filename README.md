@@ -9,7 +9,7 @@
 
 ![Version](https://img.shields.io/badge/version-1.0.0-red)
 ![License](https://img.shields.io/badge/license-MIT-purple)
-![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20-1a2c80)
+![Platform](https://img.shields.io/badge/platform-Windows-1a2c80)
 ![Field](https://img.shields.io/badge/topic-finance-gold)
 ![Models](https://img.shields.io/badge/models-xgb%20%7C%20lstm%20%7C%20linear_regression-caf1de)
 
@@ -23,7 +23,21 @@ Therefore, through this project, I want to aid those people in improving their i
 
 That said, organizational investors could still use this tool as an assistant, supporting them in building financial models. 
 ## 🏠Project structure
-
+```
+Project_root
+├───data
+├───docs
+├───notebook
+├───result
+└───src
+    ├───app
+    │   ├───client
+    │   │   └───pages
+    │   ├───model
+    └───training
+        ├───deep_ml
+        └───normal_ml
+```
 
 ## 🔎Project details
 ### Data scope
